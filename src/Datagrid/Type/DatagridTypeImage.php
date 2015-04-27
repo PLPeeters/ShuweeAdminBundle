@@ -2,6 +2,7 @@
 
 namespace Wanjee\Shuwee\AdminBundle\Datagrid\Type;
 
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Class DatagridTypeImage
@@ -37,10 +38,21 @@ class DatagridTypeImage extends DatagridType
      */
     public function getBlockVariables($field, $entity)
     {
-        $base_path = $field->getOption('base_path', 'uploads');
+        $base_path = $this->getOption('base_path', 'uploads');
 
         return array(
             'value' => $base_path . '/' . $field->getData($entity),
         );
+    }
+
+    /**
+     * @param \Symfony\Component\OptionsResolver\OptionsResolver $resolver
+     */
+    protected function configureOptions(OptionsResolver $resolver)
+    {
+        parent::configureOptions($resolver);
+
+        $resolver->setDefault('base_path', 'uploads');
+        $resolver->setRequired('base_path');
     }
 }

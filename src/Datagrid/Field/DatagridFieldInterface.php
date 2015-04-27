@@ -15,27 +15,10 @@ interface DatagridFieldInterface
     public function getName();
 
     /**
-     * @return array
+     * Get label from type options
+     * @return string The label for the current field
      */
-    public function getOptions();
-
-    /**
-     * @param string $name
-     * @return bool
-     */
-    public function hasOption($name);
-
-    /**
-     * @param string $name
-     * @param mixed $default
-     */
-    public function getOption($name, $default = null);
-
-    /**
-     * @param string $name
-     * @param mixed $value
-     */
-    public function setOption($name, $value);
+    public function getLabel();
 
     /**
      * @param mixed $row

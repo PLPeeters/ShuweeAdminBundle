@@ -3,7 +3,7 @@
 namespace Wanjee\Shuwee\AdminBundle\Datagrid\Field;
 
 use Symfony\Component\PropertyAccess\PropertyAccess;
-
+use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Class DatagridField
  * @package Wanjee\Shuwee\AdminBundle\Datagrid\Field
@@ -23,8 +23,7 @@ class DatagridField implements DatagridFieldInterface
     /**
      * @var array
      */
-    protected $options;
-
+    protected $options = array();
 
     /**
      * @param string $name
@@ -35,13 +34,8 @@ class DatagridField implements DatagridFieldInterface
     {
         $this->name = $name;
         $this->type = $type;
-        $this->options = $options;
 
-        // add mandatory label option if missing
-        // TODO use optionResolver instead
-        if (!$this->hasOption('label')) {
-            $this->setOption('label', $name);
-        }
+        $this->setOptions($options);
     }
 
     /**
@@ -58,6 +52,27 @@ class DatagridField implements DatagridFieldInterface
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * @param array $options
+     */
+    function setOptions($options = array())
+    {
+        $resolver = new OptionsResolver();
+        $this->configureOptions($resolver);
+
+        $this->options = $resolver->resolve($options);
+    }
+
+    /**
+     * @param \Symfony\Component\OptionsResolver\OptionsResolver $resolver
+     */
+    protected function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(array(
+            'label' => null,
+        ));
     }
 
     /**
@@ -97,6 +112,19 @@ class DatagridField implements DatagridFieldInterface
     public function setOption($name, $value)
     {
         $this->options[$name] = $value;
+    }
+
+    /**
+     *
+     */
+    public function getLabel()
+    {
+        if ($label = $this->getOption('label', null)) {
+            return $label;
+        }
+
+        // defaults to column name
+        return $this->name;
     }
 
     /**

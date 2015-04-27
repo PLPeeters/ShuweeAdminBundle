@@ -8,7 +8,7 @@
         <tr>
             {% for field in datagrid.fields %}
                 <th>
-                    {{ field.options['label'] | trans({}, 'ShuweeAdminBundle') }}
+                    {{ field.getLabel | trans({}, 'ShuweeAdminBundle') | capitalize }}
                 </th>
             {% endfor %}
             <th class="actions">{{ "datagrid.actions" | trans({}, 'ShuweeAdminBundle') }}</th>
